@@ -20,8 +20,14 @@ This repository contains an Xcode project built with Swift. It is structured to 
 - **ListView Page**  
   <img width="1206" height="2622" alt="ListView Page" src="https://github.com/user-attachments/assets/ec3572d8-0173-4f38-a61e-739782aafd71" />
 
+  **Current**
+  <img width="1206" height="2622" alt="Current LocationListView" src="https://github.com/user-attachments/assets/42c8554d-9a52-41bb-b448-22860a5c0f32" />
+
 - **DetailsView Page**  
   <img width="1206" height="2622" alt="DetailView Page" src="https://github.com/user-attachments/assets/1e432c32-9a02-4422-8b1b-152bd0c517b9" />
+  
+  **Current**
+  <img width="1206" height="2622" alt="Current LoactionDetailView" src="https://github.com/user-attachments/assets/43fbfae5-5ff9-4175-a1cb-8899d07f95b7" />
 
 
 ## Requirements
