@@ -32,11 +32,11 @@ struct Temperature {
     }
 }
 
-struct Location: Identifiable {
-    let id = UUID()
-    let name: String
-    let latitude: Double
-    let longitude: Double
-    let weather: Weather
-    let temperature: Temperature
-}
+//struct Location: Identifiable {
+//    let id = UUID()
+//    let name: String
+//    let latitude: Double
+//    let longitude: Double
+//    let weather: Weather
+//    let temperature: Temperature
+//}

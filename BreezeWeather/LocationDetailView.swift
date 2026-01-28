@@ -1,99 +1,69 @@
 import SwiftUI
+import CoreData
 
 struct LocationDetailView: View {
 
-    let location: Location
+    @ObservedObject var location: Location
+    @StateObject private var viewModel: DetailViewModel
 
-    @State private var temperature: Double?
-    @State private var windSpeed: Double?
-    @State private var precipitation: Double?
-    @State private var surfacePressure: Double?
+    init(location: Location) {
+        self.location = location
 
-    private let weatherService = WeatherService(
-        networkService: HttpNetworking()
-    )
+        let networkService = HttpNetworking()
+        let weatherService = WeatherService(networkService: networkService)
+
+        _viewModel = StateObject(wrappedValue: DetailViewModel(weatherService: weatherService))
+    }
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color.black, Color.blue.opacity(0.6)],
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            LinearGradient(colors: [Color.black, Color.blue.opacity(0.6)],
+                           startPoint: .top,
+                           endPoint: .bottom)
             .ignoresSafeArea()
 
             VStack(spacing: 24) {
-                Text(location.name)
+
+                Text(location.name ?? "Unknown Location")
                     .font(.largeTitle)
                     .foregroundColor(.white)
 
-                Image(systemName: location.weather.icon)
+                Image(systemName: "cloud.sun.fill")
                     .font(.system(size: 120))
                     .foregroundColor(.yellow)
 
-
                 VStack(spacing: 25) {
                     HStack(spacing: 25) {
-                        weatherCard(
+                        WeatherInfoCard(
                             title: "TEMP",
-                            value: temperature.map { "\(Int($0))°" } ?? "--"
+                            value: viewModel.temperature.map { "\(Int($0))°" } ?? "--"
                         )
 
-                        weatherCard(
+                        WeatherInfoCard(
                             title: "WIND",
-                            value: windSpeed.map { "\(Int($0)) km/h" } ?? "--"
+                            value: viewModel.windSpeed.map { "\(Int($0)) km/h" } ?? "--"
                         )
                     }
 
                     HStack(spacing: 16) {
-                        weatherCard(
+                        WeatherInfoCard(
                             title: "PRESSURE",
-                            value: surfacePressure.map { "\(Int($0)) hPa" } ?? "--"
+                            value: viewModel.surfacePressure.map { "\(Int($0)) hPa" } ?? "--"
                         )
 
-                        weatherCard(
+                        WeatherInfoCard(
                             title: "RAIN",
-                            value: precipitation.map { "\(String(format: "%.1f", $0)) mm" } ?? "--"
+                            value: viewModel.precipitation.map { String(format: "%.1f mm", $0) } ?? "--"
                         )
                     }
                 }
-                .padding(.top, 12)
 
                 Spacer()
             }
             .padding()
         }
         .task {
-            do {
-                let response = try await weatherService.fetchWeather(
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                )
-
-                temperature      = response.current.temperature2M
-                windSpeed        = response.current.windSpeed10M
-                precipitation    = response.current.precipitation
-                surfacePressure  = response.current.surfacePressure   
-            } catch {
-                print(error)
-            }
+            await viewModel.fetchWeather(for: location)
         }
-    }
-
-    private func weatherCard(title: String, value: String) -> some View {
-        VStack(spacing: 8) {
-            Text(title)
-                .font(.caption)
-                .foregroundColor(.gray)
-
-            Text(value)
-                .font(.title3)
-                .fontWeight(.semibold)
-                .foregroundColor(.white)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.white.opacity(0.12))
-        .cornerRadius(14)
     }
 }

@@ -1,6 +1,11 @@
 import SwiftUI
+import CoreData   
 
 struct ContentView: View {
+
+    @Environment(\.managedObjectContext)
+    private var viewContext
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -10,21 +15,25 @@ struct ContentView: View {
                     endPoint: .bottom
                 )
                 .ignoresSafeArea()
-                
+
                 VStack(spacing: 24) {
                     Image(systemName: "umbrella.fill")
                         .font(.system(size: 80))
                         .foregroundColor(.blue)
-                    
+
                     Text("Breeze")
                         .font(.largeTitle)
                         .foregroundColor(.white)
-                    
+
                     Text("Weather App")
                         .foregroundColor(.gray)
-                    
+
                     NavigationLink {
                         LocationListView()
+                            .environment(
+                                \.managedObjectContext,
+                                viewContext
+                            )
                     } label: {
                         Circle()
                             .fill(Color.blue)
