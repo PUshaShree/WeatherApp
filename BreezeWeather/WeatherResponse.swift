@@ -1,17 +1,20 @@
 import Foundation
 
-struct WeatherResponse: Codable {
-    let current: Current
+struct WeatherResponse: Decodable {
+    let current: CurrentWeather
 }
 
-struct Current: Codable {
+struct CurrentWeather: Decodable {
+
     let temperature2M: Double
     let windSpeed10M: Double
     let precipitation: Double
+    let surfacePressure: Double
 
     enum CodingKeys: String, CodingKey {
-        case temperature2M = "temperature_2m"
-        case windSpeed10M = "wind_speed_10m"
+        case temperature2M   = "temperature_2m"
+        case windSpeed10M    = "wind_speed_10m"
         case precipitation
+        case surfacePressure = "surface_pressure"
     }
 }

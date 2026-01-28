@@ -18,9 +18,8 @@ struct WeatherEndpoint: APIEndpoint {
             URLQueryItem(name: "longitude", value: "\(request.longitude)"),
             URLQueryItem(
                 name: "current",
-                value: "temperature_2m,wind_speed_10m,precipitation"
+                value: "temperature_2m,wind_speed_10m,precipitation,surface_pressure"
             )
         ]
     }
 }
-
