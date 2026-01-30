@@ -2,17 +2,16 @@ import SwiftUI
 import CoreData
 
 struct LocationListView: View {
-
+    
     @Environment(\.managedObjectContext) private var viewContext
-
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Location.name, ascending: true)],
-        animation: .default
+                animation: .default
     )
     private var locations: FetchedResults<Location>
-
+    
     @State private var searchText = ""
-
+    
     // Filtered locations based on search
     private var filteredLocations: [Location] {
         if searchText.isEmpty {
@@ -23,7 +22,7 @@ struct LocationListView: View {
             }
         }
     }
-
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -44,7 +43,7 @@ struct LocationListView: View {
             .toolbar {
                 NavigationLink("Add") {
                     AddLocationView()
-                        .environment(\.managedObjectContext, viewContext)
+                        .environment(\.managedObjectContext, viewContext)
                 }
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
